@@ -10,9 +10,9 @@ if ('Notification' in window &&
 ) {
     var messaging = firebase.messaging();
 
-    if (Notification.permission === 'granted') {
-        getToken();
-    }
+    // if (Notification.permission === 'granted') {
+    getToken();
+    // }
 
     // handle catch the notification on current page
     messaging.onMessage(function(payload) {
@@ -71,9 +71,6 @@ function getToken() {
                         setTokenSentToServer(false);
                     }
                 })
-                .catch(function(error) {
-                    setTokenSentToServer(false);
-                });
         })
         .catch(function(error) {
             console.log('Unable to get permission to notify' + error);

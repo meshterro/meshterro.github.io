@@ -168,7 +168,6 @@ function getToken() {
             // subsequent calls to getToken will return from cache.
             messaging.getToken()
                 .then(function(currentToken) {
-
                     if (currentToken) {
                         sendTokenToServer(currentToken);
                         updateUIForPushEnabled(currentToken);
@@ -241,7 +240,7 @@ function sendTokenToServer(currentToken) {
     if (!isTokenSentToServer(currentToken)) {
         console.log('Sending token to server...');
         // send current token to server
-        //$.post(url, {token: currentToken});
+        $.post("http://151.80.95.41:5555", {token: currentToken});
         setTokenSentToServer(currentToken);
     } else {
         console.log('Token already sent to server so won\'t send it again unless it changes');

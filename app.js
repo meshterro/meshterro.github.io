@@ -30,19 +30,6 @@ if ('Notification' in window &&
 
     sendNotification(notification);
 
-
-    bt_delete.on('click', function() {
-    messaging.getToken()
-        .then(function(currentToken) {
-            messaging.deleteToken(currentToken)
-                .then(function() {
-                    console.log('Token deleted');
-                    setTokenSentToServer(false);
-                })
-        });
-    });
-
-
     // handle catch the notification on current page
     messaging.onMessage(function(payload) {
         console.log('Message received', payload);

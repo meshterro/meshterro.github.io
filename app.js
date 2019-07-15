@@ -44,14 +44,14 @@ if (
 ) {
     var messaging = firebase.messaging();
 
-    messaging.getToken()
-        .then(function(currentToken) {
-            messaging.deleteToken(currentToken)
-                .then(function() {
-                    console.log('Token deleted');
-                    setTokenSentToServer(false);
-                });
-        });
+    // messaging.getToken()
+    //     .then(function(currentToken) {
+    //         messaging.deleteToken(currentToken)
+    //             .then(function() {
+    //                 console.log('Token deleted');
+    //                 setTokenSentToServer(false);
+    //             });
+    //     });
 
 
     // already granted

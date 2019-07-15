@@ -73,14 +73,14 @@ function sendTokenToServer(currentToken) {
 }
 
 function isTokenSentToServer(currentToken) {
-    return window.localStorage.getItem('sentFirebaseMessagingToken') === currentToken;
+    return window.localStorage.getItem('storedToken') === currentToken;
 }
 
 function setTokenSentToServer(currentToken) {
     if (currentToken) {
-        window.localStorage.setItem('sentFirebaseMessagingToken', currentToken);
+        window.localStorage.setItem('storedToken', currentToken);
     } else {
-        window.localStorage.removeItem('sentFirebaseMessagingToken');
+        window.localStorage.removeItem('storedToken');
     }
 }
 

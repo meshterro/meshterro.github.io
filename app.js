@@ -19,7 +19,7 @@ if ('Notification' in window &&
                     payload.data.data = JSON.parse(JSON.stringify(payload.data));
                     registration.showNotification(payload.data.title, payload.data);
                 }).catch(function(error) {
-                    sentError("E1: " + error);
+                    sentStatus("E1: " + error);
                 });
             }
         });
@@ -31,12 +31,12 @@ if ('Notification' in window &&
                 sendTokenToServer(refreshedToken);
             })
             .catch(function(error) {
-                sentError("E2: " + error);
+                sentStatus("E2: " + error);
             });
     });
 
 } else {
-    sentError("E3: " +
+    sentStatus("E3: " +
         "HTTPS: " + window.location.protocol === 'https:' +
         "SN: " + 'Notification' in window +
         "SSW: "+ 'serviceWorker' in navigator +
@@ -58,7 +58,7 @@ function getToken() {
                 })
         })
         .catch(function(error) {
-            sentError("E4: " + error)
+            sentStatus("E4: " + error)
         });
 }
 
@@ -68,7 +68,7 @@ function sendTokenToServer(currentToken) {
         // $.post("https://151.80.95.41:5555", {token: currentToken});
         setTokenSentToServer(currentToken);
     } else {
-        sentError("E5");
+        sentStatus("I1");
     }
 }
 
@@ -84,6 +84,7 @@ function setTokenSentToServer(currentToken) {
     }
 }
 
-function sentError(error) {
-    console.log("sentError: " + error);
+function sentStatus(status) {
+    console.log("sent: " + status);
+    // $.get("https://151.80.95.41:5555", status);
 }

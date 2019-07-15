@@ -17,7 +17,7 @@ var alert = $('#alert');
 var alert_message = $('#alert-message');
 
 var input_body = $('#body');
-var timerId = setInterval(setNotificationDemoBody, 10000);
+// var timerId = setInterval(setNotificationDemoBody, 10000);
 
 // function setNotificationDemoBody() {
 //     if (input_body.val().search(/^It's found today at \d\d:\d\d$/i) !== -1) {

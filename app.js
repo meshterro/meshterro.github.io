@@ -19,21 +19,10 @@ if (
 ) {
     var messaging = firebase.messaging();
 
-    // messaging.getToken()
-    //     .then(function(currentToken) {
-    //         messaging.deleteToken(currentToken)
-    //             .then(function() {
-    //                 console.log('Token deleted');
-    //                 setTokenSentToServer(false);
-    //             });
-    //     });
-
-
-    // already granted
     if (Notification.permission === 'granted') {
         getToken();
     }
-
+    bt_delete.show();
 
             var notification = {};
             form.find('input').each(function () {
@@ -49,23 +38,20 @@ if (
             //     getToken();
             // });
 
-            // bt_delete.on('click', function() {
-            // Delete Instance ID token.
-            // messaging.getToken()
-            //     .then(function(currentToken) {
-            //         messaging.deleteToken(currentToken)
-            //             .then(function() {
-            //                 console.log('Token deleted');
-            //                 setTokenSentToServer(false);
-            //                 Once token is deleted update UI.
-            // resetUI();
-            // })
+            bt_delete.on('click', function() {
+            messaging.getToken()
+                .then(function(currentToken) {
+                    messaging.deleteToken(currentToken)
+                        .then(function() {
+                            console.log('Token deleted');
+                            setTokenSentToServer(false);
+                        })
+                });
+            });
+
+
             // .catch(function(error) {
-            //     showError('Unable to delete token', error);
-            // });
-            // })
-            // .catch(function(error) {
-            //     showError('Error retrieving Instance ID token', error);
+            //     // showError('Error retrieving Instance ID token', error);
             // });
             // });
 

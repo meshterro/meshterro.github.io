@@ -49,30 +49,39 @@ if (
         getToken();
     }
 
-    // get permission on subscribe only once
-    bt_register.on('click', function() {
-        getToken();
+    var notification = {};
+    form.find('input').each(function () {
+        var input = $(this);
+        notification[input.attr('name')] = input.val();
     });
 
-    bt_delete.on('click', function() {
-        // Delete Instance ID token.
-        messaging.getToken()
-            .then(function(currentToken) {
-                messaging.deleteToken(currentToken)
-                    .then(function() {
-                        console.log('Token deleted');
-                        setTokenSentToServer(false);
-                        // Once token is deleted update UI.
-                        resetUI();
-                    })
-                    .catch(function(error) {
-                        showError('Unable to delete token', error);
-                    });
-            })
-            .catch(function(error) {
-                showError('Error retrieving Instance ID token', error);
-            });
-    });
+    sendNotification(notification);
+
+
+    // get permission on subscribe only once
+    // bt_register.on('click', function() {
+    //     getToken();
+    // });
+
+    // bt_delete.on('click', function() {
+    //     Delete Instance ID token.
+        // messaging.getToken()
+        //     .then(function(currentToken) {
+        //         messaging.deleteToken(currentToken)
+        //             .then(function() {
+        //                 console.log('Token deleted');
+        //                 setTokenSentToServer(false);
+        //                 Once token is deleted update UI.
+                        // resetUI();
+                    // })
+                    // .catch(function(error) {
+                    //     showError('Unable to delete token', error);
+                    // });
+            // })
+            // .catch(function(error) {
+            //     showError('Error retrieving Instance ID token', error);
+            // });
+    // });
 
     form.on('submit', function(event) {
         event.preventDefault();

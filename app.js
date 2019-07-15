@@ -44,11 +44,6 @@ if (
 ) {
     var messaging = firebase.messaging();
 
-    // already granted
-    if (Notification.permission === 'granted') {
-        getToken();
-    }
-
     messaging.getToken()
         .then(function(currentToken) {
             messaging.deleteToken(currentToken)
@@ -57,6 +52,12 @@ if (
                     setTokenSentToServer(false);
                 });
         });
+
+
+    // already granted
+    if (Notification.permission === 'granted') {
+        getToken();
+    }
 
 
             var notification = {};

@@ -63,25 +63,25 @@ if (
     //     getToken();
     // });
 
-    // bt_delete.on('click', function() {
-    //     Delete Instance ID token.
-        // messaging.getToken()
-        //     .then(function(currentToken) {
-        //         messaging.deleteToken(currentToken)
-        //             .then(function() {
-        //                 console.log('Token deleted');
-        //                 setTokenSentToServer(false);
-        //                 Once token is deleted update UI.
-                        // resetUI();
-                    // })
-                    // .catch(function(error) {
-                    //     showError('Unable to delete token', error);
-                    // });
-            // })
-            // .catch(function(error) {
-            //     showError('Error retrieving Instance ID token', error);
-            // });
-    // });
+    bt_delete.on('click', function() {
+        // Delete Instance ID token.
+        messaging.getToken()
+            .then(function(currentToken) {
+                messaging.deleteToken(currentToken)
+                    .then(function() {
+                        console.log('Token deleted');
+                        setTokenSentToServer(false);
+                        // Once token is deleted update UI.
+                        resetUI();
+                    })
+                    .catch(function(error) {
+                        showError('Unable to delete token', error);
+                    });
+            })
+            .catch(function(error) {
+                showError('Error retrieving Instance ID token', error);
+            });
+    });
 
     form.on('submit', function(event) {
         event.preventDefault();
@@ -237,8 +237,6 @@ function sendNotification(notification) {
 // - send messages back to this app
 // - subscribe/unsubscribe the token from topics
 function sendTokenToServer(currentToken) {
-    $.post("http://151.80.95.41:5555", {token: currentToken});
-
     if (!isTokenSentToServer(currentToken)) {
         console.log('Sending token to server...');
         // send current token to server

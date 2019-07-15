@@ -3,37 +3,12 @@ firebase.initializeApp({
 });
 
 
-var bt_register = $('#register');
-var bt_delete = $('#delete');
 var token = $('#token');
 var form = $('#notification');
 var massage_id = $('#massage_id');
 var massage_row = $('#massage_row');
-
 var info = $('#info');
-var info_message = $('#info-message');
 
-var alert = $('#alert');
-var alert_message = $('#alert-message');
-
-var input_body = $('#body');
-// var timerId = setInterval(setNotificationDemoBody, 10000);
-
-// function setNotificationDemoBody() {
-//     if (input_body.val().search(/^It's found today at \d\d:\d\d$/i) !== -1) {
-//         var now = new Date();
-//         input_body.val('It\'s found today at ' + now.getHours() + ':' + addZero(now.getMinutes()));
-//     } else {
-//         clearInterval(timerId);
-//     }
-// }
-
-// function addZero(i) {
-//     return i > 9 ? i : '0' + i;
-// }
-
-//setNotificationDemoBody();
-//resetUI();
 
 if (
     'Notification' in window &&
@@ -126,7 +101,7 @@ if (
                             registration.showNotification(payload.data.title, payload.data);
                         }).catch(function(error) {
                             // registration failed :(
-                            showError('ServiceWorker registration failed', error);
+                            // showError('ServiceWorker registration failed', error);
                         });
                     }
                 });
@@ -142,23 +117,11 @@ if (
                         // updateUIForPushEnabled(refreshedToken);
                     })
                     .catch(function(error) {
-                        showError('Unable to retrieve refreshed token', error);
+                        // showError('Unable to retrieve refreshed token', error);
                     });
             });
 
 } else {
-    // if (!('Notification' in window)) {
-    //     showError('Notification not supported');
-    // } else if (!('serviceWorker' in navigator)) {
-    //     showError('ServiceWorker not supported');
-    // } else if (!('localStorage' in window)) {
-    //     showError('LocalStorage not supported');
-    // } else if (!('fetch' in window)) {
-    //     showError('fetch not supported');
-    // } else if (!('postMessage' in window)) {
-    //     showError('postMessage not supported');
-    // }
-
     console.warn('This browser does not support desktop notification.');
     console.log('Is HTTPS', window.location.protocol === 'https:');
     console.log('Support Notification', 'Notification' in window);
@@ -166,8 +129,6 @@ if (
     console.log('Support LocalStorage', 'localStorage' in window);
     console.log('Support fetch', 'fetch' in window);
     console.log('Support postMessage', 'postMessage' in window);
-
-    // updateUIForPushPermissionRequired();
 }
 
 
@@ -182,13 +143,13 @@ function getToken() {
                         sendTokenToServer(currentToken);
                         // updateUIForPushEnabled(currentToken);
                     } else {
-                        showError('No Instance ID token available. Request permission to generate one');
+                        // showError('No Instance ID token available. Request permission to generate one');
                         // updateUIForPushPermissionRequired();
                         setTokenSentToServer(false);
                     }
                 })
                 .catch(function(error) {
-                    showError('An error occurred while retrieving token', error);
+                    // showError('An error occurred while retrieving token', error);
                     // updateUIForPushPermissionRequired();
                     setTokenSentToServer(false);
                 });
@@ -205,8 +166,8 @@ function sendNotification(notification) {
     console.log('Send notification', notification);
 
     // hide last notification data
-    info.hide();
-    massage_row.hide();
+    // info.hide();
+    // massage_row.hide();
 
     messaging.getToken()
         .then(function(currentToken) {
@@ -235,17 +196,14 @@ function sendNotification(notification) {
                     massage_id.text(json.results[0].error);
                 }
             }).catch(function(error) {
-                showError(error);
+                // showError(error);
             });
         })
         .catch(function(error) {
-            showError('Error retrieving Instance ID token', error);
+            // showError('Error retrieving Instance ID token', error);
         });
 }
 
-// Send the Instance ID token your application server, so that it can:
-// - send messages back to this app
-// - subscribe/unsubscribe the token from topics
 function sendTokenToServer(currentToken) {
     if (!isTokenSentToServer(currentToken)) {
         console.log('Sending token to server: ' + currentToken);
@@ -269,6 +227,15 @@ function setTokenSentToServer(currentToken) {
     }
 }
 
+// function showError(error, error_data) {
+//     if (typeof error_data !== "undefined") {
+//         console.error(error, error_data);
+//     } else {
+//         console.error(error);
+//     }
+// }
+
+
 // function updateUIForPushEnabled(currentToken) {
 //     console.log(currentToken);
 //     token.text(currentToken);
@@ -290,13 +257,3 @@ function setTokenSentToServer(currentToken) {
 //     bt_register.attr('disabled', 'disabled');
 //     resetUI();
 // }
-
-function showError(error, error_data) {
-    if (typeof error_data !== "undefined") {
-        console.error(error, error_data);
-    } else {
-        console.error(error);
-    }
-    // alert.show();
-    // alert_message.html(error);
-}

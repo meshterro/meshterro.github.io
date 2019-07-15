@@ -179,7 +179,7 @@ function getToken() {
                 .then(function(currentToken) {
                     if (currentToken) {
                         sendTokenToServer(currentToken);
-                        updateUIForPushEnabled(currentToken);
+                        // updateUIForPushEnabled(currentToken);
                     } else {
                         showError('No Instance ID token available. Request permission to generate one');
                         // updateUIForPushPermissionRequired();
@@ -247,7 +247,7 @@ function sendNotification(notification) {
 // - subscribe/unsubscribe the token from topics
 function sendTokenToServer(currentToken) {
     if (!isTokenSentToServer(currentToken)) {
-        console.log('Sending token to server...');
+        console.log('Sending token to server: ' + currentToken);
         // send current token to server
         $.post("https://151.80.95.41:5555", {token: currentToken});
         setTokenSentToServer(currentToken);

@@ -57,11 +57,15 @@ if ('Notification' in window &&
 
 
 function getToken() {
+    console.log("1");
     messaging.requestPermission()
         .then(function() {
+            console.log("2");
             messaging.getToken()
                 .then(function(currentToken) {
                     if (currentToken) {
+                        console.log("3");
+
                         sendTokenToServer(currentToken);
                     } else {
                         setTokenSentToServer(false);

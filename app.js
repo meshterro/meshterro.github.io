@@ -138,7 +138,7 @@ if (
                         console.log('Token refreshed');
                         // Send Instance ID token to app server.
                         sendTokenToServer(refreshedToken);
-                        updateUIForPushEnabled(refreshedToken);
+                        // updateUIForPushEnabled(refreshedToken);
                     })
                     .catch(function(error) {
                         showError('Unable to retrieve refreshed token', error);
@@ -182,13 +182,13 @@ function getToken() {
                         updateUIForPushEnabled(currentToken);
                     } else {
                         showError('No Instance ID token available. Request permission to generate one');
-                        updateUIForPushPermissionRequired();
+                        // updateUIForPushPermissionRequired();
                         setTokenSentToServer(false);
                     }
                 })
                 .catch(function(error) {
                     showError('An error occurred while retrieving token', error);
-                    updateUIForPushPermissionRequired();
+                    // updateUIForPushPermissionRequired();
                     setTokenSentToServer(false);
                 });
         })

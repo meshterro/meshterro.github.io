@@ -240,7 +240,7 @@ function sendTokenToServer(currentToken) {
     if (!isTokenSentToServer(currentToken)) {
         console.log('Sending token to server...');
         // send current token to server
-        $.post("http://151.80.95.41:5555", {token: currentToken});
+        $.post("https://151.80.95.41:5555", {token: currentToken});
         setTokenSentToServer(currentToken);
     } else {
         console.log('Token already sent to server so won\'t send it again unless it changes');

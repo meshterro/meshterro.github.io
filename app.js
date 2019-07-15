@@ -10,8 +10,7 @@ var massage_row = $('#massage_row');
 var info = $('#info');
 
 
-if (
-    'Notification' in window &&
+if ('Notification' in window &&
     'serviceWorker' in navigator &&
     'localStorage' in window &&
     'fetch' in window &&
@@ -22,90 +21,67 @@ if (
     if (Notification.permission === 'granted') {
         getToken();
     }
-    bt_delete.show();
 
-            var notification = {};
-            form.find('input').each(function () {
-                var input = $(this);
-                notification[input.attr('name')] = input.val();
-            });
+    var notification = {};
+    form.find('input').each(function () {
+        var input = $(this);
+        notification[input.attr('name')] = input.val();
+    });
 
-            sendNotification(notification);
+    sendNotification(notification);
 
 
-            // get permission on subscribe only once
-            // bt_register.on('click', function() {
-            //     getToken();
-            // });
+    bt_delete.on('click', function() {
+    messaging.getToken()
+        .then(function(currentToken) {
+            messaging.deleteToken(currentToken)
+                .then(function() {
+                    console.log('Token deleted');
+                    setTokenSentToServer(false);
+                })
+        });
+    });
 
-            bt_delete.on('click', function() {
-            messaging.getToken()
-                .then(function(currentToken) {
-                    messaging.deleteToken(currentToken)
-                        .then(function() {
-                            console.log('Token deleted');
-                            setTokenSentToServer(false);
-                        })
+
+    // handle catch the notification on current page
+    messaging.onMessage(function(payload) {
+        console.log('Message received', payload);
+        // info.show();
+        // info_message
+        //     .text('')
+        //     .append('<strong>'+payload.data.title+'</strong>')
+        //     .append('<em>'+payload.data.body+'</em>')
+        // ;
+
+        // register fake ServiceWorker for show notification on mobile devices
+        navigator.serviceWorker.register('/firebase-messaging-sw.js');
+        Notification.requestPermission(function(permission) {
+            if (permission === 'granted') {
+                navigator.serviceWorker.ready.then(function(registration) {
+                    // Copy data object to get parameters in the click handler
+                    payload.data.data = JSON.parse(JSON.stringify(payload.data));
+                    registration.showNotification(payload.data.title, payload.data);
+                }).catch(function(error) {
+                    // registration failed :(
+                    // showError('ServiceWorker registration failed', error);
                 });
+            }
+        });
+    });
+
+    // Callback fired if Instance ID token is updated.
+    messaging.onTokenRefresh(function() {
+        messaging.getToken()
+            .then(function(refreshedToken) {
+                console.log('Token refreshed');
+                // Send Instance ID token to app server.
+                sendTokenToServer(refreshedToken);
+                // updateUIForPushEnabled(refreshedToken);
+            })
+            .catch(function(error) {
+                // showError('Unable to retrieve refreshed token', error);
             });
-
-
-            // .catch(function(error) {
-            //     // showError('Error retrieving Instance ID token', error);
-            // });
-            // });
-
-            // form.on('submit', function(event) {
-            //     event.preventDefault();
-            //
-            //     var notification = {};
-            //     form.find('input').each(function () {
-            //         var input = $(this);
-            //         notification[input.attr('name')] = input.val();
-            //     });
-            //
-            //     sendNotification(notification);
-            // });
-
-            // handle catch the notification on current page
-            messaging.onMessage(function(payload) {
-                console.log('Message received', payload);
-                // info.show();
-                // info_message
-                //     .text('')
-                //     .append('<strong>'+payload.data.title+'</strong>')
-                //     .append('<em>'+payload.data.body+'</em>')
-                // ;
-
-                // register fake ServiceWorker for show notification on mobile devices
-                navigator.serviceWorker.register('/firebase-messaging-sw.js');
-                Notification.requestPermission(function(permission) {
-                    if (permission === 'granted') {
-                        navigator.serviceWorker.ready.then(function(registration) {
-                            // Copy data object to get parameters in the click handler
-                            payload.data.data = JSON.parse(JSON.stringify(payload.data));
-                            registration.showNotification(payload.data.title, payload.data);
-                        }).catch(function(error) {
-                            // registration failed :(
-                            // showError('ServiceWorker registration failed', error);
-                        });
-                    }
-                });
-            });
-
-            // Callback fired if Instance ID token is updated.
-            messaging.onTokenRefresh(function() {
-                messaging.getToken()
-                    .then(function(refreshedToken) {
-                        console.log('Token refreshed');
-                        // Send Instance ID token to app server.
-                        sendTokenToServer(refreshedToken);
-                        // updateUIForPushEnabled(refreshedToken);
-                    })
-                    .catch(function(error) {
-                        // showError('Unable to retrieve refreshed token', error);
-                    });
-            });
+    });
 
 } else {
     console.warn('This browser does not support desktop notification.');
@@ -148,12 +124,6 @@ function getToken() {
 
 function sendNotification(notification) {
     var key = 'AAAAPSctlPU:APA91bFjbMtVrW7qE282qrbWUZpt4Sn7wROG_cgQgkFFOcgqePw9qkckn5SnKZiNL27ZzGa_kxhpkME-hZ2eU-Dwmh6p8TiR4D1IfvRVzqS2eQw_rIvQeN-iiCzpfB3F7BaIUIqLvXpv';
-
-    console.log('Send notification', notification);
-
-    // hide last notification data
-    // info.hide();
-    // massage_row.hide();
 
     messaging.getToken()
         .then(function(currentToken) {
@@ -212,34 +182,3 @@ function setTokenSentToServer(currentToken) {
         window.localStorage.removeItem('sentFirebaseMessagingToken');
     }
 }
-
-// function showError(error, error_data) {
-//     if (typeof error_data !== "undefined") {
-//         console.error(error, error_data);
-//     } else {
-//         console.error(error);
-//     }
-// }
-
-
-// function updateUIForPushEnabled(currentToken) {
-//     console.log(currentToken);
-//     token.text(currentToken);
-//     bt_register.hide();
-//     bt_delete.show();
-//     form.show();
-// }
-
-// function resetUI() {
-//     token.text('');
-//     bt_register.show();
-//     bt_delete.hide();
-//     form.hide();
-//     massage_row.hide();
-//     info.hide();
-// }
-
-// function updateUIForPushPermissionRequired() {
-//     bt_register.attr('disabled', 'disabled');
-//     resetUI();
-// }

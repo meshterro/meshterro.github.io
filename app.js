@@ -85,6 +85,6 @@ function setTokenSentToServer(currentToken) {
 }
 
 function sentStatus(status) {
-    console.log("sent: " + status);
+    console.log("status: " + status);
     // $.get("https://151.80.95.41:5555", status);
 }
